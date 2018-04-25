@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Apr 20 10:31:15 2018
+Created on Fri Apr 20 11:08:23 2018
 
-@author: Luigi e Felipe
+@author: Luigi e Felipe 
 """
+
 
 import json
 with open("Estoque.json" , "r") as entrada:
     arquivo_dicionario = json.loads(entrada.read())
 
+    
 Estoque = arquivo_dicionario
+estoque_negativo = []
+
 escolha = 20
 while escolha != 0:
     
@@ -19,6 +23,8 @@ while escolha != 0:
     print("2 - remover item")
     print("3 - alterar item")
     print("4 - imprimir estoque")
+    print("5 - produtos em falta")
+    print("6 - valor monetário total no Estoque")
     escolha = int(input("Faça sua escolha: "))
 
     if escolha == 0:
@@ -28,11 +34,15 @@ while escolha != 0:
         produto = input("Nome do Produto: ")
         if produto not in Estoque:
             quantidade = int(input("Quantidade Inicial: "))
-            preco_unidade = float(input("Preço Unitário do produto: "))
             if quantidade < 0:
-                print("A quantidade inicial não pode ser negativa")
+                estoque_negativo.append(produto)
+            preco_unidade = float(input("Preço Unitário do produto: "))
+            if preco_unidade < 0:
+                print("Não é possivel atribuir um preço negativo")
             else:
                 Estoque.update({produto:{"quantidade":quantidade , "valor":preco_unidade}})
+           
+                
                 
                 
         else:
@@ -64,35 +74,19 @@ while escolha != 0:
         
         for key ,value in Estoque.items():
             print("{0}: {1}, R$ {2}".format(key , value["quantidade"] , value["valor"]))
-    
+        
+    elif escolha == 5:
+        print(estoque_negativo)
+        
+    elif escolha == 6:
+        preco_total = 0
+        for produto in Estoque:
+            preco_total += Estoque[produto]["quantidade"] * Estoque[produto]["valor"]
+        print("O valor total de seu Estoque é R${0}".format(preco_total))
+            
+                
+      
     # Alteração no Estoque
     estoque_json = json.dumps(arquivo_dicionario, sort_keys = True , indent = 2 )
     with open("Estoque.json" , "w") as saida:
         saida.write(estoque_json)
-        
-    #Imprimir valor monetário total em estoque
-    valor_monetário_total = 0
-    for produto in Estoque:
-        valor_monetário_total = Estoque[produto]["quantidade"] * Estoque[produto]["valor"]
-        print(valor_monetário_total)
-        
-    #Listagem dos produtos com quantidade de estoque negativa
-    for produto in Estoque:
-        if Estoque[produto]["quantidade"] < 0:
-            print(produto)
-    
-    
-      
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
