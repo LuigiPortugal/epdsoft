@@ -203,8 +203,9 @@ while e != 0:
                     #Listagem dos produtos com quantidade de estoque negativa
                     elif escolha == 6:
                         for produto in dicionario_lojas[loja]:
-                            if dicionario_lojas[loja][produto]["quantidade"] < 0:
+                            if dicionario_lojas[loja][produto]["Quantidade"] < 0:
                                 print(produto)
+                                print("A quantidade do estoque negativo é: {0}".format(dicionario_lojas[loja][produto]["Quantidade"]))
                         print("Controle de Estoque:")
                         print("0 - sair")
                         print("1 - adicionar item")
